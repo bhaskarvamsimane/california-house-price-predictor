@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request
 import pickle
 import numpy as np
+import os
 
 app = Flask(__name__)
 
-# Load trained model
 model = pickle.load(open('model.pkl', 'rb'))
 
 @app.route('/')
@@ -22,4 +22,5 @@ def predict():
         return render_template('index.html', prediction_text=f"Error: {e}")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  # use the port Render provides
+    app.run(debug=True, host='0.0.0.0', port=port)  # Bind to 0.0.0.0 for public access
